@@ -1,0 +1,56 @@
+body{font-family: 'Pacifico', cursive;
+    background-color: var(--main);}
+:root{--header:#B44D12;
+    --font1:#FFF3C4;
+    --font2:#222222;
+    --font3:#035388;
+    --main:#F7F7F7;
+    --border:#8D2B0B;
+    --contayner:#FFFBEA;
+    --button:#DE911D}
+header{background-color: var(--header);}
+.title{max-width: 1280px;
+    margin: 0 auto;
+    color: var(--font1);
+    font-size: 50px;
+    padding: 50px 0;}
+
+.book_contayner{max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    gap: 20px;    }
+@media(max-width: 1024px){.book_contayner{display: flex;
+    flex-direction: column;    }}
+.book__body{background-color: var(--contayner);
+    color: var(--font2);
+    border: 1px solid var(--border);
+    border-radius: 5%;
+    font-size: 15px;
+    box-shadow: 1px 1px 1px var(--header);
+    padding: 30px 20px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height:2;
+    margin: 20px 0;
+    justify-content: space-between
+    }
+.title_book{color: var(--font3);
+    font-size: 18px;}
+img{width: 250px;
+height: 250px;
+object-fit: contain;
+object-position: center;}
+.book__control{display: flex;
+    gap: 10px;}
+.button{display: flex;
+    width: 50%;
+    border-top: 1px solid var(--border);}
+button{font-family: 'Pacifico', cursive;
+    background-color: var(--contayner);
+    border: none;
+    font-size: 15px;
+    color: var(--button); }
+button:hover{cursor: pointer;}
+button:active{color: var(--header);}
