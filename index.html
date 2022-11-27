@@ -14,7 +14,19 @@
     <body>
         <header>
             <div class="title">
-                <h1>Книжная полка</h1>
+                <div class="title_text">
+                    <h1>Книжная полка</h1>
+                </div>
+                <div class="title_add">
+                    <button class="add" id="add">Добавить книгу</button>
+                    <div class="form__add" id="form__add">
+                        <input id="title" placeholder="Название книги"/>
+                        <input id="authors" placeholder="Автор книги"/>
+                        <input id="year" placeholder="Год издания книги"/>
+                        <input id="image" placeholder="Ссылка на изображение"/>
+                        <button class="save" id="save">Сохранить</button>
+                    </div>
+                </div>                 
             </div>
         </header>
         <main>
@@ -26,18 +38,21 @@
         <script>
                     const books = [
         {
+        id: 1,
         title: 'Design Patterns: Elements of Reusable Object-Oriented Software',
         authors: 'Erich Gamma, John Vlissides, Ralph Johnson, Richard Helm',
         year: '1994',
         image: 'https://images-na.ssl-images-amazon.com/images/I/81gtKoapHFL.jpg'
         },
         {
+        id: 2,
         title: 'JavaScript: The Good Parts',
         authors: 'Douglas Crockford',
         year: '2008',
         image: 'https://images-na.ssl-images-amazon.com/images/I/81kqrwS1nNL.jpg'
         },
         {
+        id: 3,
         title:
         'JavaScript Patterns: Build Better Applications with Coding and Design Patterns',
         authors: 'Stoyan Stefanov',
@@ -46,41 +61,111 @@
         'https://images-na.ssl-images-amazon.com/images/I/51%2BSiphz7AL._SX377_BO1,204,203,200_.jpg'
         },
         {
+        id: 4,
         title:
         'JavaScript: The Definitive Guide: Activate Your Web Pages (Definitive Guides)',
         authors: 'David Flanagan',
         year: 2011,
         image:
         'https://images-na.ssl-images-amazon.com/images/I/51WD-F3GobL._SX379_BO1,204,203,200_.jpg'
+        },
+        {
+        id: 5,
+        title:
+        'Javascript For Web Designers',
+        authors: 'Mat Marquis',
+        year: 2006,
+        image:
+        'https://m.media-amazon.com/images/I/41c-Otd-jvL.jpg'
+        },
+        {
+        id: 6,
+        title:
+        'The Road to React: Your journey to master plain yet pragmatic React.js',
+        authors: 'Robin Wieruch',
+        year: 2018,
+        image:
+        'https://m.media-amazon.com/images/P/172004399X.01._SCLZZZZZZZ_SX500_.jpg'
         }
         ]
         
+        function clearBook(){
+            document.getElementById("image").value = ""
+            document.getElementById("title").value = ""
+            document.getElementById("authors").value = ""
+            document.getElementById("year").value = ""
 
+        }
 
         const myBook = document.getElementById("book_contayner")
 
-
-        books.forEach((book) => {
-            myBook.innerHTML += `
-                <div class="book__body">
-                    <img src="${book.image}"/>
-                    <h2 class="title_book">${book.title}</h2>
-                    <h3>${book.authors}</h3>
-                    <p>${book.year}</p>
-                    <div class="book__control">
-                        <div class="button">
-                            <button>Изменить</button> 
-                        </div>
-                        <div class="button">
-                            <button>Удалить</button> 
+        function renderBooks() {
+        book_contayner.innerHTML = ""
+                books.forEach((book) => {
+                myBook.innerHTML += `
+                    <div class="book__body">
+                        <img src="${book.image}"/>
+                        <h2 class="title_book">${book.title}</h2>
+                        <h3>${book.authors}</h3>
+                        <p>${book.year}</p>
+                        <div class="book__control">
+                            <div class="button">
+                                <button>Изменить</button> 
+                            </div>
+                            <div  class="button">
+                                <button onclick="deleteBook()">Удалить</button> 
+                            </div>
                         </div>
                     </div>
-                </div>
+                `
+            })
+        }
+        let isOpen = false
+        function openMenu() {
+            const ContainerAdd = document.getElementById("form__add")
 
+            if (isOpen) {
+                ContainerAdd.style.display = "none"
+                isOpen = false
+            } else {
+                ContainerAdd.style.display = "flex"
+                isOpen = true
+            }
+        }
 
-            `
-        })
+        function deleteBook(id) {
+            const book = books.find((idBook) => {
+                return idBook.id === id
+            })
+            const bookIndex = books.indexOf(book)
+            books.splice(bookIndex, 1)
+            renderBooks()
+        }
+        
+        const addButton = document.getElementById("add")
+        const saveButton = document.getElementById("save")
+        addButton.addEventListener ("click", openMenu )
+        saveButton.addEventListener ("click", openMenu )
+        saveButton.addEventListener ("click", () =>{
+            const imageValue = document.getElementById("image").value
+            const titleValue = document.getElementById("title").value
+            const authorsValue = document.getElementById("authors").value
+            const yearValue = document.getElementById("year").value
 
+            const book = {
+                image: imageValue,
+                title: titleValue,
+                authors: authorsValue,
+                year: yearValue
+            }
+            books.push(book)
+            renderBooks()
+            clearBook()
+        } )
+
+        renderBooks()
+
+        
 
 
         
