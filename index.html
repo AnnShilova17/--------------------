@@ -18,13 +18,23 @@
                     <h1>Книжная полка</h1>
                 </div>
                 <div class="title_add">
-                    <button class="add" id="add">Добавить книгу</button>
-                    <div class="form__add" id="form__add">
-                        <input id="title" placeholder="Название книги"/>
-                        <input id="authors" placeholder="Автор книги"/>
-                        <input id="year" placeholder="Год издания книги"/>
-                        <input id="image" placeholder="Ссылка на изображение"/>
-                        <button class="save" id="save">Сохранить</button>
+                    <button class="add" id="add_button">Добавить книгу</button>
+                    <div class="background_form__add" id="background_form__add">
+                        <div class="form__add" id="form__add">
+                            <div class="form__add_title">
+                                <h2>Добавить новую книгу</h2>
+                            </div>
+                            <input id="title" placeholder="Название книги"/>
+                            <input id="authors" placeholder="Автор книги"/>
+                            <div class="form__add_year_image">
+                                <input id="year" placeholder="Год издания книги"/>
+                                <input id="image" placeholder="Ссылка на изображение"/>
+                            </div>
+                            <div class="form__add_button">
+                                <button class="save" id="save_button">Сохранить</button>
+                                <button class="save" id="close_button">Закрыть</button>
+                            </div>
+                        </div>
                     </div>
                 </div>                 
             </div>
@@ -36,7 +46,7 @@
             
         </main>
         <script>
-                    const books = [
+                    let books = [
         {
         id: 1,
         title: 'Design Patterns: Elements of Reusable Object-Oriented Software',
@@ -97,7 +107,17 @@
 
         }
 
-        const myBook = document.getElementById("book_contayner")
+        function saveToLocalStorage(){
+            let booksJSON = JSON.stringify(books)
+            localStorage.setItem("books", booksJSON)
+        }
+
+        let booksJSON = localStorage.getItem("books")
+        if (booksJSON) {
+            books = JSON.parse(booksJSON)
+        }
+
+        let myBook = document.getElementById("book_contayner")
 
         function renderBooks() {
         book_contayner.innerHTML = ""
@@ -113,46 +133,46 @@
                                 <button>Изменить</button> 
                             </div>
                             <div  class="button">
-                                <button onclick="deleteBook()">Удалить</button> 
+                                <button onclick="deleteBook(${book.id})">Удалить</button> 
                             </div>
                         </div>
                     </div>
                 `
             })
         }
-        let isOpen = false
-        function openMenu() {
-            const ContainerAdd = document.getElementById("form__add")
-
-            if (isOpen) {
-                ContainerAdd.style.display = "none"
-                isOpen = false
-            } else {
-                ContainerAdd.style.display = "flex"
-                isOpen = true
-            }
-        }
-
+        
         function deleteBook(id) {
-            const book = books.find((idBook) => {
+            let book = books.find((idBook) => {
                 return idBook.id === id
             })
-            const bookIndex = books.indexOf(book)
+            let bookIndex = books.indexOf(book)
             books.splice(bookIndex, 1)
             renderBooks()
+            saveToLocalStorage()
         }
         
-        const addButton = document.getElementById("add")
-        const saveButton = document.getElementById("save")
-        addButton.addEventListener ("click", openMenu )
-        saveButton.addEventListener ("click", openMenu )
-        saveButton.addEventListener ("click", () =>{
-            const imageValue = document.getElementById("image").value
-            const titleValue = document.getElementById("title").value
-            const authorsValue = document.getElementById("authors").value
-            const yearValue = document.getElementById("year").value
+        let addButton = document.getElementById("add_button")
+        let saveButton = document.getElementById("save_button")
+        let closeButton = document.getElementById("close_button")
+        let backgroundFormAdd = document.getElementById("background_form__add")
+        let deleteButton = document.getElementById("background_form__add")
 
-            const book = {
+        function addMenu() {
+            backgroundFormAdd.style.display = "flex"
+        }
+        function closeMenu() {
+            backgroundFormAdd.style.display = "none"
+        }
+
+        addButton.addEventListener ("click", addMenu )
+        closeButton.addEventListener ("click", closeMenu )
+        saveButton.addEventListener ("click", () =>{
+            let imageValue = document.getElementById("image").value
+            let titleValue = document.getElementById("title").value
+            let authorsValue = document.getElementById("authors").value
+            let yearValue = document.getElementById("year").value
+
+            let book = {
                 image: imageValue,
                 title: titleValue,
                 authors: authorsValue,
@@ -161,7 +181,11 @@
             books.push(book)
             renderBooks()
             clearBook()
+            closeMenu()
+            saveToLocalStorage()
         } )
+
+
 
         renderBooks()
 
